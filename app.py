@@ -2,7 +2,6 @@
 # visit http://127.0.0.1:8050/ in your web browser.
 
 from dash import Dash, html, dcc, Input, Output
-import dash_table
 import dash
 import plotly.graph_objects as go
 import plotly.express as px
@@ -24,23 +23,13 @@ colors = {
 
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
+
 df = pd.read_csv('Mediadegols.csv')
 
 x = df['Edição']
 y = df['Gols']
 
 fig, ax = plt.subplots(figsize=(13, 7))
-
-fig = px.bar(df, x="Edição", y="Gols", color="Edição", barmode="group", labels={
-    'Edição': 'Edição',
-    'Gols': 'Média de gols'
-},color_discrete_sequence=px.colors.qualitative.T10,template='plotly_white',text='Gols')
-
-fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text']
-)
 
 fig = go.Figure()
 
@@ -71,7 +60,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     dcc.Graph(
         id='media_de_gols',
         figure=fig
-    )
+    ) 
+    
 ])
 
 @app.callback(
@@ -80,23 +70,23 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
 )
 def update_output(value):
     if value == "Todas as Edições":
-        fig = px.bar(df, x="Edição", y="Gols", color="Edição", barmode="group",labels={
+        fig = px.bar(df, x="Edição", y="Gols", color="Gols", barmode="group",labels={
         'Edição': 'Edição',
         'Gols': 'Média de gols'
-        },text_auto = True)
+        }, color_continuous_scale=px.colors.sequential.Viridis, text_auto = True)
         fig.update_xaxes(tick0=1930, dtick=4)
         fig.update_layout(
     plot_bgcolor=colors['background'],
     paper_bgcolor=colors['background'],
-    font_color=colors['text']
+    font_color=colors['text'],
 )
         
     else:
         tabela_filtrada = df.loc[df['Edição']==value]
-        fig = px.bar(tabela_filtrada, x="Edição", y="Gols", color="Edição", barmode="group", labels={
+        fig = px.bar(tabela_filtrada, x="Edição", y="Gols", color="Gols", barmode="group", labels={
         'Edição': 'Edição',
         'Gols': 'Média de gols'
-        },text_auto = True)
+        }, color_continuous_scale=px.colors.sequential.Viridis, text_auto = True)
         fig.update_xaxes(tick0=1930, dtick=4)
         fig.update_layout(
     plot_bgcolor=colors['background'],
