@@ -2,6 +2,8 @@
 # visit http://127.0.0.1:8050/ in your web browser.
 
 from dash import Dash, html, dcc, Input, Output
+import dash_table
+import dash
 import plotly.graph_objects as go
 import plotly.express as px
 import os
@@ -11,7 +13,7 @@ import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-app = Dash(__name__)
+app = dash.Dash(__name__)
 
 server = app.server
 
@@ -54,7 +56,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ),
 
     html.Div(children='''
-        Dash: Média de gols nas Copas
+        Média de gols nas Copas
     ''',
     style={
         'textAlign': 'center',
