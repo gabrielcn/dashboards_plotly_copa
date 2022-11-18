@@ -11,90 +11,51 @@ import numpy as np
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 import seaborn as sns
+import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.SPACELAB])
+
+sidebar = dbc.Nav(
+            [
+                dbc.NavLink(
+                    [
+                        html.Div(page["name"], className="ms-2"),
+                    ],
+                    href=page["path"],
+                    active="exact",
+                )
+                for page in dash.page_registry.values()
+            ],
+            vertical=True,
+            pills=True,
+            className="bg-light",
+)
+
 
 server = app.server
 
-colors = {
-    'background': '#111111',
-    'text': '#fff'
-}
+app.layout = dbc.Container([
+    dbc.Row([
+        dbc.Col(html.Div("Dashboards",
+                         style={'fontSize':50, 'textAlign':'center'}))
+    ]),
 
-# assume you have a "long-form" data frame
-# see https://plotly.com/python/px-arguments/ for more options
+    html.Hr(),
 
-df = pd.read_csv('Mediadegols.csv')
+    dbc.Row(
+        [
+            dbc.Col(
+                [
+                    sidebar
+                ], xs=4, sm=4, md=2, lg=2, xl=2, xxl=2),
 
-x = df['Edição']
-y = df['Gols']
-
-fig, ax = plt.subplots(figsize=(13, 7))
-
-fig = go.Figure()
-
-opcoes = list(df['Edição'].unique())
-opcoes.append("Todas as Edições")
-
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
-    html.H1(children='Copa do Mundo FIFA',
-    style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-    ),
-
-    html.Div(children='''
-        Média de gols nas Copas
-    ''',
-    style={
-        'textAlign': 'center',
-        'color': colors['text']
-    }
-    
-    
-    ),
-
-    dcc.Dropdown(opcoes, value='Todas as Edicoes', id='lista_copas'),
-
-    dcc.Graph(
-        id='media_de_gols',
-        figure=fig
-    ) 
-    
-])
-
-@app.callback(
-    Output('media_de_gols', 'figure'),
-    Input('lista_copas', 'value')
-)
-def update_output(value):
-    if value == "Todas as Edições":
-        fig = px.bar(df, x="Edição", y="Gols", color="Gols", barmode="group",labels={
-        'Edição': 'Edição',
-        'Gols': 'Média de gols'
-        }, color_continuous_scale=px.colors.sequential.Viridis, text_auto = True)
-        fig.update_xaxes(tick0=1930, dtick=4)
-        fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text'],
-)
-        
-    else:
-        tabela_filtrada = df.loc[df['Edição']==value]
-        fig = px.bar(tabela_filtrada, x="Edição", y="Gols", color="Gols", barmode="group", labels={
-        'Edição': 'Edição',
-        'Gols': 'Média de gols'
-        }, color_continuous_scale=px.colors.sequential.Viridis, text_auto = True)
-        fig.update_xaxes(tick0=1930, dtick=4)
-        fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text']
-)
-    return fig
-
+            dbc.Col(
+                [
+                    dash.page_container
+                ], xs=8, sm=8, md=10, lg=10, xl=10, xxl=10)
+        ]
+    )
+], fluid=True)
 
 if __name__ == '__main__':
     app.run_server(debug=True)
