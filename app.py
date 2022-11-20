@@ -37,22 +37,22 @@ server = app.server
 app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(html.Div("Dashboards",
-                         style={'fontSize':50, 'textAlign':'center'}))
+                         style={'fontSize':50, 'textAlign':'center', 'font-weight': 'bold', 'backgroundColor': '#ADD8E6'}))
     ]),
 
-    html.Hr(),
+    html.Hr(style={'backgroundColor': '#ADD8E6'}),
 
     dbc.Row(
         [
             dbc.Col(
                 [
                     sidebar
-                ], xs=4, sm=4, md=2, lg=2, xl=2, xxl=2),
+                ], xs=4, sm=4, md=2, lg=2, xl=2, xxl=2, style={'backgroundColor': '#ADD8E6'}),
 
             dbc.Col(
                 [
                     dash.page_container
-                ], xs=8, sm=8, md=10, lg=10, xl=10, xxl=10)
+                ], xs=8, sm=8, md=10, lg=10, xl=10, xxl=10, style={'backgroundColor': '#ADD8E6'})
         ]
     )
 ], fluid=True)

@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import dash_bootstrap_components as dbc
 
-dash.register_page(__name__, path='/', name='Home')
+dash.register_page(__name__, path='/', name='Média de Gols')
 
 colors = {
-    'background': '#111111',
+    'background': '#000000',
     'text': '#fff'
 }
 
@@ -66,7 +66,7 @@ layout = html.Div(style={'backgroundColor': colors['background']}, children=[
 
     dbc.Col(
                     [
-                        dcc.Dropdown(opcoes, value='Todas as Edicoes', id='lista_copas')
+                        dcc.Dropdown(opcoes, value='Todas as Edições', id='lista_copas', style={'backgroundColor': '#E6E6FA'})
                     ], xs=10, sm=10, md=8, lg=4, xl=4, xxl=4
                 ),
 
@@ -99,7 +99,7 @@ def update_output(value):
     if value == "Todas as Edições":
         fig = px.bar(df, x="Edição", y="Gols", color="Gols", barmode="group",labels={
         'Edição': 'Edição',
-        'Média': 'Média de gols'
+        'Gols': 'Média de gols'
         }, color_continuous_scale=px.colors.sequential.Viridis, text_auto = True)
         fig.update_xaxes(tick0=1930, dtick=4)
         fig.update_layout(

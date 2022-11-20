@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import dash_bootstrap_components as dbc
 
-dash.register_page(__name__, path='/pg2', name='Media')
+dash.register_page(__name__, path='/pg2', name='Média de Gols')
 
 colors = {
-    'background': '#111111',
+    'background': 'black',
     'text': '#fff'
 }
 
@@ -29,8 +29,11 @@ fig, ax = plt.subplots(figsize=(13, 7))
 
 fig = go.Figure()
 
-fig = px.line(df, x="Edição", y="Gols")
+fig = px.scatter(df, x="Edição", y="Gols", labels={
+    'Gols': 'Média',
+})
 fig.update_xaxes(tick0=1930, dtick=4)
+fig.update_traces(mode='lines+markers', line=dict( color='red')) # Deixando o gráfico com linhas e marcadores (por default px.scatter é apenas dispersão e px.lines é apenas linhas)
 fig.update_layout(
 plot_bgcolor=colors['background'],
 paper_bgcolor=colors['background'],

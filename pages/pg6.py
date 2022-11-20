@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import dash_bootstrap_components as dbc
 
-dash.register_page(__name__, path='/pg3', name='Público')
+dash.register_page(__name__, path='/pg6', name='Partidas disputadas')
 
 colors = {
     'background': '#111111',
@@ -29,11 +29,10 @@ fig = go.Figure()
 opcoes = list(df['Year'].unique())
 opcoes.append("Todas as Edições")
 
-fig = px.bar(df, x="Year", y="Attendance", color="Country",  hover_name = 'Country', labels={
-        'Country': 'País sede',
-        'Attendance': 'Público',
-        'Year' : 'Edição'
-        }, color_discrete_sequence=px.colors.qualitative.Light24, text='Country')
+fig = px.bar(df, x="Year", y="Matches Played", color="Matches Played", labels={
+        'Matches Played': 'Partidas disputadas',
+        'Year': 'Edição',
+        }, color_discrete_sequence=px.colors.qualitative.Prism, text_auto=True)
 fig.update_xaxes(tick0=1930, dtick=4)
 fig.update_layout(
 plot_bgcolor=colors['background'],
@@ -49,7 +48,7 @@ layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     ),
 
     html.Div(children='''
-        Público total em Copas
+        Partidas disputadas
     ''',
     style={
         'textAlign': 'center',
@@ -64,7 +63,7 @@ layout = html.Div(style={'backgroundColor': colors['background']}, children=[
 
     dbc.Col(
                     [
-                        dcc.Dropdown(opcoes, value='Todas as Edições', id='lista_copas2')
+                        dcc.Dropdown(opcoes, value='Todas as Edições', id='lista_copas')
                     ], xs=10, sm=10, md=8, lg=4, xl=4, xxl=4
                 ),
 
@@ -76,7 +75,7 @@ layout = html.Div(style={'backgroundColor': colors['background']}, children=[
 
      dbc.Col(
                     [
-                        dcc.Graph(id='publico_total',
+                        dcc.Graph(id='partidas_disputadas',
                         figure=fig)
 
                     ], width=12
@@ -90,35 +89,32 @@ layout = html.Div(style={'backgroundColor': colors['background']}, children=[
 )
 
 @callback(
-    Output('publico_total', 'figure'),
-    Input('lista_copas2', 'value')
+    Output('partidas_disputadas', 'figure'),
+    Input('lista_copas', 'value')
 )
 def update_output(value):
     if value == "Todas as Edições":
-        fig = px.bar(df, x="Year", y="Attendance", color="Country",  hover_name = 'Country', labels={
-        'Country': 'País sede',
-        'Attendance': 'Público',
-        'Year' : 'Edição'
-        }, color_discrete_sequence=px.colors.qualitative.Light24, text='Country')
+        fig = px.bar(df, x="Year", y="Matches Played", color="Matches Played", labels={
+        'Matches Played': 'Partidas disputadas',
+        'Year': 'Edição',
+        }, color_discrete_sequence=px.colors.qualitative.Prism, text_auto=True)
         fig.update_xaxes(tick0=1930, dtick=4)
         fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text'],
-)
+            plot_bgcolor=colors['background'],
+            paper_bgcolor=colors['background'],
+            font_color=colors['text'],
+            )
         
     else:
         tabela_filtrada = df.loc[df['Year']==value]
-        fig = px.bar(tabela_filtrada, x="Year", y="Attendance", color="Country",  hover_name = 'Country', labels={
-        'Country': 'País sede',
-        'Attendance': 'Público',
-        'Year' : 'Edição'
-        }, text='Country')
+        fig = px.bar(tabela_filtrada, x="Year", y="Matches Played", color="Matches Played", labels={
+        'Matches Played': 'Partidas disputadas',
+        'Year': 'Edição',
+        }, color_discrete_sequence=px.colors.qualitative.Prism, text_auto=True)
         fig.update_xaxes(tick0=1930, dtick=4)
         fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text']
+            plot_bgcolor=colors['background'],
+            paper_bgcolor=colors['background'],
+            font_color=colors['text']
 )
     return fig
-    
