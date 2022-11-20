@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import dash_bootstrap_components as dbc
 
-dash.register_page(__name__, path='/', name='Média de Gols')
+dash.register_page(__name__, path='/', name='Home')
 
 colors = {
     'background': '#000000',
