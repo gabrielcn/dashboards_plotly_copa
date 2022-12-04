@@ -32,7 +32,7 @@ sidebar = dbc.Nav(
 )
 
 
-server = app.server
+#server = app.server
 
 app.layout = dbc.Container([
     dbc.Row([
